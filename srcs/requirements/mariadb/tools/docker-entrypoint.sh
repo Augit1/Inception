@@ -41,5 +41,6 @@ if [ ! -d "/var/lib/mysql/mysql" ]; then
 fi
 
 echo "=> Starting MariaDB in foreground..."
+
 # Launch MariaDB upfront (PID 1)
 exec mysqld --user=mysql --datadir=/var/lib/mysql

@@ -1,9 +1,12 @@
 #!/bin/sh
 
-echo "Checking connexion to MariaDB..."
-while ! mysqladmin ping -h"${WORDPRESS_DB_HOST}" -- silent; do
-	echo "Waiting for MariaDB..."
-	sleep 2
+while ! mysqladmin ping \
+    -h"${WORDPRESS_DB_HOST}" \
+    -u"${WORDPRESS_DB_USER}" \
+    -p"${WORDPRESS_DB_PASSWORD}" \
+    --silent; do
+    echo "Waiting for MariaDB..."
+    sleep 2
 done
 echo "MariaDB is ready !"
 
@@ -29,6 +32,7 @@ if ! wp core is-installed --allow-root; then
 else
 	echo "WordPress is already installed."
 fi
+
 
 sed -i "s/127.0.0.1/0.0.0.0/" /etc/php81/php-fpm.d/www.conf
 
