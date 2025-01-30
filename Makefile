@@ -11,7 +11,7 @@ clean:
 	docker-compose -f srcs/docker-compose.yml down -v
 
 fclean: clean
-	docker rm $(docker images -q) clean
+	docker-compose rm $(docker images -q) clean
 
 re: fclean all
 
