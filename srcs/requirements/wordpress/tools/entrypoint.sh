@@ -1,22 +1,22 @@
 #!/bin/sh
 
-while ! mysqladmin ping -h"$WORDPRESS_DB_HOST" -u"$WORDPRESS_DB_USER" -p"$WORDPRESS_DB_PASSWORD" --silent; do
+while ! mysqladmin ping -h"$WORDPRESS_DB_HOST" \
+						-u"$WORDPRESS_DB_USER" \
+						-p"$WORDPRESS_DB_PASSWORD" --silent; do
   echo "Waiting for MariaDB..."
   sleep 2
 done
 echo "MariaDB is ready !"
 
-WP_PATH="/var/www/wordpress"
-
-if [ ! -f "$WP_PATH/wp-includes/version.php" ]; then
+if [ ! -f "$WORDPRESS_PATH/wp-includes/version.php" ]; then
   echo "Downloading WordPress..."
-  wp core download --allow-root --path="$WP_PATH"
+  wp core download --allow-root --path="$WORDPRESS_PATH"
 fi
 
-if [ ! -f "$WP_PATH/wp-config.php" ]; then
+if [ ! -f "$WORDPRESS_PATH/wp-config.php" ]; then
   echo "WordPress configuration..."
   wp config create \
-    --path="$WP_PATH" \
+    --path="$WORDPRESS_PATH" \
     --dbname="$WORDPRESS_DB_NAME" \
     --dbuser="$WORDPRESS_DB_USER" \
     --dbpass="$WORDPRESS_DB_PASSWORD" \
@@ -24,9 +24,9 @@ if [ ! -f "$WP_PATH/wp-config.php" ]; then
     --allow-root
 fi
 
-if ! wp core is-installed --path="$WP_PATH" --allow-root; then
+if ! wp core is-installed --path="$WORDPRESS_PATH" --allow-root; then
   wp core install \
-    --path="$WP_PATH" \
+    --path="$WORDPRESS_PATH" \
     --url="https://${DOMAIN_NAME}" \
     --title="${WORDPRESS_SITE_TITLE}" \
     --admin_user="${WORDPRESS_ADMIN_USER}" \
@@ -34,11 +34,17 @@ if ! wp core is-installed --path="$WP_PATH" --allow-root; then
     --admin_email="${WORDPRESS_ADMIN_EMAIL}" \
     --skip-email \
     --allow-root
-
+  
   echo "WordPress has been successfully installed."
 else
   echo "WordPress is already installed."
 fi
+
+wp user create regularuser "$WORDPRESS_RANDOM_USER" "$WORDPRESS_RANDOM_EMAIL" \
+	--role="subscriber" \
+	--user_pass="$WORDPRESS_RANDOM_PASS" \
+	--path="$WORDPRESS_PATH" \
+	--allow-root
 
 sed -i "s/127.0.0.1/0.0.0.0/" /etc/php81/php-fpm.d/www.conf
 
