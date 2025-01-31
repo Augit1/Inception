@@ -13,6 +13,8 @@ services:
       - wp_network
     depends_on:
       - wordpress
+    volumes:
+      - wordpress_files:/var/www/wordpress:ro
 
   wordpress:
     build:
@@ -20,12 +22,8 @@ services:
 
     container_name: wordpress
 
-    environment:
-      WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
-      WORDPRESS_DB_PORT: ${WORDPRESS_DB_PORT}
-      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
-      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
-      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
+    env_file:
+      - .env
 
     networks:
       - wp_network
@@ -37,9 +35,6 @@ services:
   mariadb:
     build:
       context: ./requirements/mariadb
-   
-    ports:
-      - "3306:3306"
 
     container_name: mariadb
 
@@ -49,13 +44,9 @@ services:
       - wp_network
     volumes:
       - wordpress_db:/var/lib/mysql
-    
-    environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
 
+    env_file:
+      - .env
 
 volumes:
   wordpress_files:

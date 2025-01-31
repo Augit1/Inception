@@ -15,8 +15,6 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 EXPOSE 3306
 
-RUN mysql_install_db --user=mysql --datadir=/var/lib/mysql
-
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 
 CMD ["mysqld"]

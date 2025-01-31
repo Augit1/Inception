@@ -10,6 +10,7 @@ if [ ! -d "/var/lib/mysql/mysql" ]; then
     pid="$!"
 
     echo "=> Waiting for MariaDB to start..."
+	
 	# Waiting for daemon MariaDB
 	while ! mysqladmin ping --silent; do
 		sleep 1
@@ -21,13 +22,6 @@ if [ ! -d "/var/lib/mysql/mysql" ]; then
 		envsubst < /docker-entrypoint-initdb.d/init.sql > /tmp/init.sql
 		mv /tmp/init.sql /docker-entrypoint-initdb.d/init.sql
 	fi
-
-#	for f in /docker-entrypoint-initdb.d/*.sql; do
-#		if [ -f "$f" ]; then
-#			echo "   Running $f"
-#            mysql < "$f"
-#        fi
-#    done
 
 	for f in /docker-entrypoint-initdb.d/*.sql; do
 		[ -f "$f" ] && mysql < "$f"
