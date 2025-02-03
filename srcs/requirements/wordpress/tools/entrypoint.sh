@@ -40,11 +40,11 @@ else
   echo "WordPress is already installed."
 fi
 
-wp user create regularuser "$WORDPRESS_RANDOM_USER" "$WORDPRESS_RANDOM_EMAIL" \
-	--role="subscriber" \
-	--user_pass="$WORDPRESS_RANDOM_PASS" \
-	--path="$WORDPRESS_PATH" \
-	--allow-root
+#wp user create regularuser "$WORDPRESS_RANDOM_USER" "$WORDPRESS_RANDOM_EMAIL" \
+#	--role="subscriber" \
+#	--user_pass="$WORDPRESS_RANDOM_PASS" \
+#	--path="$WORDPRESS_PATH" \
+#	--allow-root
 
 sed -i "s/127.0.0.1/0.0.0.0/" /etc/php81/php-fpm.d/www.conf
 
