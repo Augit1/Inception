@@ -64,6 +64,8 @@ else
     echo "User $WORDPRESS_RANDOM_USER has already been created."
 fi
 
-sed -i "s/127.0.0.1/0.0.0.0/" /etc/php81/php-fpm.d/www.conf
+sed -i "s/127.0.0.1/0.0.0.0/" /etc/php83/php-fpm.d/www.conf
 
-exec php-fpm81 -F --nodaemonize
+echo "WordPress has been successfully configured !"
+
+exec php-fpm83 -F --nodaemonize

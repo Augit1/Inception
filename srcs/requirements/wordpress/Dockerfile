@@ -1,7 +1,4 @@
-FROM alpine:3.18
-
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.18/main" > /etc/apk/repositories && \
-    echo "http://dl-cdn.alpinelinux.org/alpine/v3.18/community" >> /etc/apk/repositories
+FROM alpine:3.20
 
 RUN apk add --no-cache \
     php php-common php-fpm \
