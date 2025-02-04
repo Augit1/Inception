@@ -22,6 +22,8 @@ if [ ! -f "$WORDPRESS_PATH/wp-config.php" ]; then
     --dbpass="$WORDPRESS_DB_PASSWORD" \
     --dbhost="$WORDPRESS_DB_HOST" \
     --allow-root
+
+  sed -i "s/<?php/<?php\nif ( ! isset(\$_SERVER['HTTP_HOST']) ) { \$_SERVER['HTTP_HOST'] = 'aude-la-.42.fr'; }\n/" "$WORDPRESS_PATH/wp-config.php"
 fi
 
 if ! wp core is-installed --path="$WORDPRESS_PATH" --allow-root; then

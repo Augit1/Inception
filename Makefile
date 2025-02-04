@@ -10,8 +10,8 @@ all:
 clean:
 	docker-compose -f srcs/docker-compose.yml down -v
 
-fclean: clean
-	docker-compose rm $(docker images -q) clean
+fclean:
+	docker-compose -f srcs/docker-compose.yml down --rmi all --volumes --remove-orphans
 
 re: fclean all
 
