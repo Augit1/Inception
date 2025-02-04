@@ -36,11 +36,23 @@ if ! wp core is-installed --path="$WORDPRESS_PATH" --allow-root; then
     --admin_email="${WORDPRESS_ADMIN_EMAIL}" \
     --skip-email \
     --allow-root
+
+  # Configuration des commentaires automatiques
+  wp option update default_comment_status 'open' --path="$WORDPRESS_PATH" --allow-root
+  wp option update comment_moderation 0 --path="$WORDPRESS_PATH" --allow-root
+  wp option update comment_whitelist 0 --path="$WORDPRESS_PATH" --allow-root
+  wp option update comments_notify 0 --path="$WORDPRESS_PATH" --allow-root
+  wp option update moderation_notify 0 --path="$WORDPRESS_PATH" --allow-root
+
   
   echo "WordPress has been successfully installed."
 else
   echo "WordPress is already installed."
 fi
+
+# Mise à jour des paramètres à chaque démarrage (au cas où)
+wp option update comment_moderation 0 --path="$WORDPRESS_PATH" --allow-root
+wp option update comment_whitelist 0 --path="$WORDPRESS_PATH" --allow-root
 
 if ! wp user get "$WORDPRESS_RANDOM_USER" --path="$WORDPRESS_PATH" --allow-root > /dev/null 2>&1; then
     wp user create "$WORDPRESS_RANDOM_USER" "$WORDPRESS_RANDOM_EMAIL" \
