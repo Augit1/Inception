@@ -40,12 +40,15 @@ else
   echo "WordPress is already installed."
 fi
 
-wp user create "$WORDPRESS_RANDOM_USER" "$WORDPRESS_RANDOM_EMAIL" \
-	--role="subscriber" \
-	--user_pass="$WORDPRESS_RANDOM_PASS" \
-	--path="$WORDPRESS_PATH" \
-	--allow-root
-
+if ! wp user get "$WORDPRESS_RANDOM_USER" --path="$WORDPRESS_PATH" --allow-root > /dev/null 2>&1; then
+    wp user create "$WORDPRESS_RANDOM_USER" "$WORDPRESS_RANDOM_EMAIL" \
+      --role="subscriber" \
+      --user_pass="$WORDPRESS_RANDOM_PASS" \
+      --path="$WORDPRESS_PATH" \
+      --allow-root
+else
+    echo "User $WORDPRESS_RANDOM_USER has already been created."
+fi
 
 sed -i "s/127.0.0.1/0.0.0.0/" /etc/php81/php-fpm.d/www.conf
 
