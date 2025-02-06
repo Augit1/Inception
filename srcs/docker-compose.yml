@@ -50,7 +50,18 @@ services:
 
 volumes:
   wordpress_files:
-  wordpress_db: 
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: /home/aude-la-/data/wordpress
+
+  wordpress_db:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: /home/aude-la-/data/mysql
 
 networks:
   wp_network:
